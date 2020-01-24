@@ -62,14 +62,14 @@ import java.util.Scanner;
      */    
     public String setRandItems(){
         
-        itemList.put("subscribe forms, with this form you can subscribe to the school", "2 grams");
-        itemList.put("unsubscribe forms, with this form you can exit the school", "2 grams");
-        itemList.put("Bottle of whisky, to handle the stress", "2 grams");
-        itemList.put("cup of coffee, for school energy", "14 grams");
+        itemList.put("subscribe_forms, with this form you can subscribe to the school", "2 grams");
+        itemList.put("unsubscribe_forms, with this form you can exit the school", "2 grams");
+        itemList.put("Bottle_of_whisky, to handle the stress", "2 grams");
+        itemList.put("cup_of_coffee, for school energy", "14 grams");
         itemList.put("key, master school key", "9 grams");
-        itemList.put("Blikje energy, voor alle school problemen", "35 grams");
+        itemList.put("Blikje_energy, voor alle school problemen", "35 grams");
         itemList.put("key2, to go to the dungeon", "4 grams");
-        itemList.put("Patatje mayo, for the hungry student", "21 grams");
+        itemList.put("Patatje_mayo, for the hungry student", "21 grams");
         
         Object[] values = itemList.keySet().toArray();
         Object key = values[new Random().nextInt(values.length)];
