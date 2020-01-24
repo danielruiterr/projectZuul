@@ -55,6 +55,7 @@ import java.util.Scanner;
         previousRooms = new Stack<Room>(); 
         playerInventory = new ArrayList<>();
         timeLimit = 20;
+        numberOfMoves = 0;
     }
     /**
      * Defines all items with their descripton and their weight and adds them to the list.
@@ -172,6 +173,9 @@ import java.util.Scanner;
         System.out.println("Welcome to the NewSchool Zuul!");
         System.out.println("NewSchool Zuul is a new, better and more innovative game");
         System.out.println("Based on the Old and original World of Zuul");
+        
+        chooseLevel();
+        
         System.out.println("Type 'help' if you need help.");
         System.out.println(player.getCurrentRoom().getLongDescription());
         System.out.println();
