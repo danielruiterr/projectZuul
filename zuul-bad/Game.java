@@ -25,6 +25,8 @@ public class Game
     private static int numberOfMoves;
     // Fix a limit to the number of moves
     private static int limitOfMoves;
+    private Stack<Room> roomHistory;    
+    private Room previousRoom;
     /**
      * Create the game and initialise its internal map.
      */
@@ -33,6 +35,7 @@ public class Game
         createRooms();
         numberOfMoves = 0;
         parser = new Parser();
+        roomHistory = new Stack<Room>();
     }
 
     /**
@@ -50,12 +53,20 @@ public class Game
         office = new Room("in the computing admin office");
         
         // initialise room exits
-        outside.setExits(null, theater, lab, pub);
-        theater.setExits(null, null, null, outside);
-        pub.setExits(null, outside, null, null);
-        lab.setExits(outside, office, null, null);
-        office.setExits(null, null, null, lab);
+        outside.setExit("east", theater);
+        outside.setExit("south", lab);
+        outside.setExit("west", pub);
 
+        theater.setExit("west", outside);
+
+        pub.setExit("east", outside);
+
+        lab.setExit("north", outside);
+        lab.setExit("east", office);
+
+        office.setExit("west", lab);
+
+        previousRoom = outside; //start history in outside where the game begins
         currentRoom = outside;  // start game outside
     }
 
@@ -89,8 +100,8 @@ public class Game
         chooseLevel();
         
         System.out.println("Type 'help' if you need help.");
-        System.out.println("You are " + currentRoom.getDescription());
         System.out.println();
+        System.out.println(currentRoom.getLongDescription());
         parser = new Parser();
     }
     /**
@@ -202,10 +213,33 @@ public class Game
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
         }
-
+                else if (commandWord.equals("back")) {
+            goBack();
+        }
+        // else command not recognised.
         return wantToQuit;
     }
+    
+    /**
+     * @return the numberOfMoves
+     */
+    public int getNumberOfMoves() {
+        return numberOfMoves;
+    }
 
+    /**
+     * @return the limitOfMoves
+     */
+    public int getLimitOfMoves() {
+        return limitOfMoves;
+    }
+    
+    /**
+     * @param limitOfMoves the limitOfMoves to set
+     */
+    public void setLimitOfMoves(int lom) {
+        limitOfMoves = lom;
+    }
     // implementations of user commands:
 
     /**
@@ -219,12 +253,12 @@ public class Game
         System.out.println("around at the university.");
         System.out.println();
         System.out.println("Your command words are:");
-        System.out.println("   go quit help");
+        parser.showCommands();
     }
 
     /** 
-     * Try to go in one direction. If there is an exit, enter
-     * the new room, otherwise print an error message.
+     * Try to in to one direction. If there is an exit, enter the new
+     * room, otherwise print an error message.
      */
     private void goRoom(Command command) 
     {
@@ -237,40 +271,18 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = null;
-        if(direction.equals("north")) {
-            nextRoom = currentRoom.northExit;
-        }
-        if(direction.equals("east")) {
-            nextRoom = currentRoom.eastExit;
-        }
-        if(direction.equals("south")) {
-            nextRoom = currentRoom.southExit;
-        }
-        if(direction.equals("west")) {
-            nextRoom = currentRoom.westExit;
-        }
+        Room nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
+            //adding a count to each move and returning how many left
+            System.out.println(Game.countMove());
         }
         else {
             currentRoom = nextRoom;
-            System.out.println("You are " + currentRoom.getDescription());
-            System.out.print("Exits: ");
-            if(currentRoom.northExit != null) {
-                System.out.print("north ");
-            }
-            if(currentRoom.eastExit != null) {
-                System.out.print("east ");
-            }
-            if(currentRoom.southExit != null) {
-                System.out.print("south ");
-            }
-            if(currentRoom.westExit != null) {
-                System.out.print("west ");
-            }
-            System.out.println();
+            System.out.println(currentRoom.getLongDescription());
+            //adding a count to each move and returning how many left
+            System.out.println(Game.countMove());
         }
     }
 
@@ -287,6 +299,18 @@ public class Game
         }
         else {
             return true;  // signal that we want to quit
+        }
+        
+    }
+    /** Returns player to the previous room 
+     **/
+    private void goBack()
+    { 
+        if (roomHistory.empty())
+        {   System.out.println("You can go back any further than where you started!")      ;
+        } else {
+            currentRoom = roomHistory.pop();
+            System.out.println(currentRoom.getLongDescription());
         }
     }
 }
