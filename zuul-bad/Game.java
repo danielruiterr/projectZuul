@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Stack;
+import java.util.Scanner;
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -154,21 +155,107 @@ import java.util.Stack;
 
     /**
      * Print out the opening message for the player.
+     * @author Didier & Daniel
      */
     private void printWelcome()
     {
         System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
+        System.out.println("Welcome to the NewSchool Zuul!");
+        System.out.println("NewSchool Zuul is a new, better and more innovative game");
+        System.out.println("Based on the Old and original World of Zuul");
         System.out.println("Type 'help' if you need help.");
         System.out.println(player.getCurrentRoom().getLongDescription());
         System.out.println();
     }
+    /**
+     *  Easy is for beginners 
+     *  Medium is for intermidiate players who have knowledge about the game and/or have played before
+     *  Hard is the make no failures way to go
+     * @author Daniel
+     */
+    private void chooseLevel()
+    {
+        // Choosing a level 
+        Scanner reader = new Scanner(System.in);
+        System.out.println("Please choose a level : Easy for beginners(0) - Medium for intermidiate (1) - Hard for pros (2)");
+        // Find the chosen level and alter the number of moves according to the chosen one
+        try {
+            switch (reader.nextInt()) {
+            case 0:
+                limitOfMoves = 20;
+                System.out.println("You've chosen the easiest way to win! - Number of moves : " + limitOfMoves);
+                break;
+            case 1:
+                limitOfMoves = 16;
+                System.out.println("You've chosen the medium level, have fun! - Number of moves : " + limitOfMoves);
+                break;
+            case 2:
+                limitOfMoves = 14;
+                System.out.println("You've chosen the hard level, best of luck you need it!  - Number of moves : " + limitOfMoves);
+                break;
+            default:
+                limitOfMoves = 20;
+                System.out.println("Unkown command - The Default level : Easy - Number of moves : " + limitOfMoves);
+                break;
+            }
+        } catch(Exception e){
+            limitOfMoves = 20;
+            System.out.println("Unkown command - Default level : Easy - Number of moves : " + limitOfMoves);
+        }
+    }
 
+    /**
+     * Counting the current move of the player
+     * returns a false statement if the player used too many moves
+     * @author Daniel
+     */
+    public static boolean countMove(){
+        // Count a move
+        numberOfMoves++;
+
+        // Give some informations about the number of moves left and made
+        if (numberOfMoves < limitOfMoves) {
+            System.out.println("You've currently done " + numberOfMoves+ " moves");
+            System.out.println("Moves left : " + (limitOfMoves - numberOfMoves));
+            return false;
+            // End the game if the maximimum number of moves is reached
+        } else {
+            System.out.println("You have reached the maximum number of moves");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("███▀▀▀██┼███▀▀▀███┼███▀█▄█▀███┼██▀▀▀");
+            System.out.println("██┼┼┼┼██┼██┼┼┼┼┼██┼██┼┼┼█┼┼┼██┼██┼┼┼");
+            System.out.println("██┼┼┼▄▄▄┼██▄▄▄▄▄██┼██┼┼┼▀┼┼┼██┼██▀▀▀");
+            System.out.println("██┼┼┼┼██┼██┼┼┼┼┼██┼██┼┼┼┼┼┼┼██┼██┼┼┼");
+            System.out.println("███▄▄▄██┼██┼┼┼┼┼██┼██┼┼┼┼┼┼┼██┼██▄▄▄");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("███▀▀▀███┼▀███┼┼██▀┼██▀▀▀┼██▀▀▀▀██▄┼");
+            System.out.println("██┼┼┼┼┼██┼┼┼██┼┼██┼┼██┼┼┼┼██┼┼┼┼┼██┼");
+            System.out.println("██┼┼┼┼┼██┼┼┼██┼┼██┼┼██▀▀▀┼██▄▄▄▄▄▀▀┼");
+            System.out.println("██┼┼┼┼┼██┼┼┼██┼┼█▀┼┼██┼┼┼┼██┼┼┼┼┼██┼");
+            System.out.println("███▄▄▄███┼┼┼─▀█▀┼┼─┼██▄▄▄┼██┼┼┼┼┼██▄");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼██┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼██┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼████▄┼┼┼▄▄▄▄▄▄▄┼┼┼▄████┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼┼▀▀█▄█████████▄█▀▀┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼┼█████████████┼┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼┼██▀▀▀███▀▀▀██┼┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼┼██┼┼┼███┼┼┼██┼┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼┼█████▀▄▀█████┼┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼┼┼███████████┼┼┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼▄▄▄██┼┼█▀█▀█┼┼██▄▄▄┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼▀▀██┼┼┼┼┼┼┼┼┼┼┼██▀▀┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼▀▀┼┼┼┼┼┼┼┼┼┼┼▀▀┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println();
+            System.out.println();
+            return true;
+        }
+    }
     /**
      * Given a command, process (that is: execute) the command.
      * @param command The command to be processed.
      * @return true If the command ends the game, false otherwise.
+     * @author Didier & Daniel
      */
     private boolean processCommand(Command command) 
     {
@@ -204,7 +291,30 @@ import java.util.Stack;
 
         return wantToQuit;
     }
+    
+    /**
+     * return the numberOfMoves
+     * @author Daniel
+     */
+    public int getNumberOfMoves() {
+        return numberOfMoves;
+    }
 
+    /**
+     * return the limitOfMoves
+     * @author Daniel
+     */
+    public int getLimitOfMoves() {
+        return limitOfMoves;
+    }
+    
+    /**
+     * set param of Limit of Moves
+     * @author Daniel
+     */
+    public void setLimitOfMoves(int lom) {
+        limitOfMoves = lom;
+    }
     // implementations of user commands:
 
     /**
@@ -224,12 +334,13 @@ import java.util.Stack;
     /** 
      * Try to go in one direction. If there is an exit, enter
      * the new room, otherwise print an error message.
+     * @author Didier & Daniel
      */
     private void goRoom(Command command) 
     {
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
+            System.out.println("Wait what? Where do you want to go to?");
             return;
         }
 
@@ -240,19 +351,23 @@ import java.util.Stack;
         
 
         if (nextRoom == null) {
-            System.out.println("There is no door!");
+            System.out.println("There is no door here, this just cost you a move!");
+            //adding a count to each move and returning how many left
+            System.out.println(Game.countMove());
         }
         else {
             //previousRooms.push(currentRoom);
             player.setCurrentRoom(nextRoom);
             System.out.println(player.getCurrentRoom().getLongDescription());
             System.out.println();
+            //adding a count to each move and returning how many left
+            System.out.println(Game.countMove());
         }
     }
     
     private void dropItem(Command command){
         if(!command.hasSecondWord()){
-            System.out.println("drop what?");
+            System.out.println("Whoa what do you wanna drop, might wanna check again?");
             return;
         }
         String temp = command.getSecondWord();
@@ -268,7 +383,7 @@ import java.util.Stack;
    
     private void pickUpItem(Command command){
         if(!command.hasSecondWord()){
-            System.out.println("pickup what?");
+            System.out.println("Pickup what exactly?");
             return;
         }
         
