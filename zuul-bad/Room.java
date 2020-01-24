@@ -1,6 +1,5 @@
 import java.util.Set;
 import java.util.HashMap;
-
 /**
  * Class Room - a room in an adventure game.
  *
@@ -8,17 +7,18 @@ import java.util.HashMap;
  * "World of Zuul" is a very simple, text based adventure game.  
  *
  * A "Room" represents one location in the scenery of the game.  It is 
- * connected to other rooms via exits.  For each existing exit, the room 
- * stores a reference to the neighboring room.
+ * connected to other rooms via exits.  The exits are labelled north, 
+ * east, south, west.  For each direction, the room stores a reference
+ * to the neighboring room, or null if there is no exit in that direction.
  * 
  * @author  Michael Kölling and David J. Barnes
  * @version 2016.02.29
  */
-
 public class Room 
 {
-    private String description;
-    private HashMap<String, Room> exits;        // stores exits of this room.
+    public String description;
+    private HashMap<String, Room> exits;
+    private HashMap<String, Item> items; 
 
     /**
      * Create a room described "description". Initially, it has
@@ -30,43 +30,66 @@ public class Room
     {
         this.description = description;
         exits = new HashMap<>();
+        items = new HashMap<>();
     }
+    
+    public Room getExit(String direction){
+        return exits.get(direction); 
+       }
 
     /**
-     * Define an exit from this room.
-     * @param direction The direction of the exit.
-     * @param neighbor  The room to which the exit leads.
+     * Define the exits of this room.  Every direction either leads
+     * to another room or is null (no exit there).
+     * @param north The north exit.
+     * @param east The east east.
+     * @param south The south exit.
+     * @param west The west exit.
      */
-    public void setExit(String direction, Room neighbor) 
+    public void setExits(String direction, Room neighbor) 
     {
-        exits.put(direction, neighbor);
+       exits.put(direction, neighbor);
+    }
+    
+    public void setItems(String name, int weight){
+        Item item = new Item(name, weight);
+        items.put(name, item);
+    }
+    
+    public Item removeItem(String name){
+        for(String key : items.keySet()){
+              if(key.equals(name)){
+              Item temp = items.get(name);
+              items.remove(name);
+              return temp; 
+            }
+        }
+        System.out.println("Item is not in the room");
+            return null; 
+    }
+    
+    
+    private String getItemString()
+    {
+        String returnString = "Items:";
+        Set<String> keys = items.keySet();
+        for(String item : keys) {
+            returnString += " " + item;
+        }
+        return returnString;
     }
 
     /**
-     * @return The short description of the room
-     * (the one that was defined in the constructor).
+     * @return The description of the room.
      */
-    public String getShortDescription()
+    public String getDescription()
     {
         return description;
     }
-
-    /**
-     * Return a description of the room in the form:
-     *     You are in the kitchen.
-     *     Exits: north west
-     * @return A long description of this room
-     */
-    public String getLongDescription()
-    {
-        return "You are " + description + ".\n" + getExitString();
+    
+    public String getLongDescription(){
+        return "you are "+ description + ".\n " + getExitString() + ".\n "+ getItemString();
     }
-
-    /**
-     * Return a string describing the room's exits, for example
-     * "Exits: north west".
-     * @return Details of the room's exits.
-     */
+    
     private String getExitString()
     {
         String returnString = "Exits:";
@@ -76,16 +99,6 @@ public class Room
         }
         return returnString;
     }
-
-    /**
-     * Return the room that is reached if we go from this room in direction
-     * "direction". If there is no room in that direction, return null.
-     * @param direction The exit's direction.
-     * @return The room in the given direction.
-     */
-    public Room getExit(String direction) 
-    {
-        return exits.get(direction);
-    }
 }
+
 

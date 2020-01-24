@@ -29,6 +29,11 @@ public class Parser
         commands = new CommandWords();
         reader = new Scanner(System.in);
     }
+    
+    public String showCommands()
+    {
+        return commands.showAll();
+    }
 
     /**
      * @return The next command from the user.
@@ -61,13 +66,5 @@ public class Parser
         else {
             return new Command(null, word2); 
         }
-    }
-
-    /**
-     * Print out a list of valid command words.
-     */
-    public void showCommands()
-    {
-        commands.showAll();
     }
 }

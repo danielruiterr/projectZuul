@@ -1,6 +1,6 @@
 /**
  * This class is part of the "World of Zuul" application. 
- * "World of Zuul" is a very simple, text based adventure game.
+ * "World of Zuul" is a very simple, text based adventure game.  
  * 
  * This class holds an enumeration of all command words known to the game.
  * It is used to recognise commands as they are typed in.
@@ -13,7 +13,7 @@ public class CommandWords
 {
     // a constant array that holds all valid command words
     private static final String[] validCommands = {
-        "go", "quit", "help", "back"
+        "go", "quit", "help","look", "pickup", "back", "drop"
     };
 
     /**
@@ -23,10 +23,18 @@ public class CommandWords
     {
         // nothing to do at the moment...
     }
+    public String showAll(){
+       String commands = ""; 
+        for(String command : validCommands){
+         commands += command + " "; 
+    }
+       return commands; 
+    }
 
     /**
      * Check whether a given String is a valid command word. 
-     * @return true if it is, false if it isn't.
+     * @return true if a given string is a valid command,
+     * false if it isn't.
      */
     public boolean isCommand(String aString)
     {
@@ -36,16 +44,5 @@ public class CommandWords
         }
         // if we get here, the string was not found in the commands
         return false;
-    }
-
-    /**
-     * Print all valid commands to System.out.
-     */
-    public void showAll() 
-    {
-        for(String command: validCommands) {
-            System.out.print(command + "  ");
-        }
-        System.out.println();
     }
 }
