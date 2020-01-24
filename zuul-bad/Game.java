@@ -1,3 +1,5 @@
+import java.util.Scanner;
+import java.util.Stack;
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -19,13 +21,17 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
-        
+    // Count the number of current number of moves
+    private static int numberOfMoves;
+    // Fix a limit to the number of moves
+    private static int limitOfMoves;
     /**
      * Create the game and initialise its internal map.
      */
     public Game() 
     {
         createRooms();
+        numberOfMoves = 0;
         parser = new Parser();
     }
 
@@ -79,23 +85,97 @@ public class Game
         System.out.println();
         System.out.println("Welcome to the World of Zuul!");
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
+        
+        chooseLevel();
+        
         System.out.println("Type 'help' if you need help.");
-        System.out.println();
         System.out.println("You are " + currentRoom.getDescription());
-        System.out.print("Exits: ");
-        if(currentRoom.northExit != null) {
-            System.out.print("north ");
-        }
-        if(currentRoom.eastExit != null) {
-            System.out.print("east ");
-        }
-        if(currentRoom.southExit != null) {
-            System.out.print("south ");
-        }
-        if(currentRoom.westExit != null) {
-            System.out.print("west ");
-        }
         System.out.println();
+        parser = new Parser();
+    }
+    /**
+     * Choosing the level of the game :
+     *  Easy is for beginners 
+     *  Medium is for intermidiate players who have knowledge about the game and/or have played before
+     *  Hard is the make no failures way to go
+     * 
+     */
+    private void chooseLevel()
+    {
+        // Choosing a level (asking to the user through the terminal)
+        Scanner reader = new Scanner(System.in);
+        System.out.println("Please choose a level : Easy for beginners(0) - Medium for intermidiate (1) - Hard for pros (2)");
+        // Find the chosen level and alter the number of moves accorfing to the chosen one
+        try {
+            switch (reader.nextInt()) {
+            case 0:
+                limitOfMoves = 20;
+                System.out.println("You've chosen the easiest way to win! - Number of moves : " + limitOfMoves);
+                break;
+            case 1:
+                limitOfMoves = 16;
+                System.out.println("You've chosen the medium level, have fun! - Number of moves : " + limitOfMoves);
+                break;
+            case 2:
+                limitOfMoves = 14;
+                System.out.println("You've chosen the hard level, best of luck you need it!  - Number of moves : " + limitOfMoves);
+                break;
+            default:
+                limitOfMoves = 20;
+                System.out.println("Unkown command - The Default level : Easy - Number of moves : " + limitOfMoves);
+                break;
+            }
+        } catch(Exception e){
+            limitOfMoves = 20;
+            System.out.println("Unkown command - Default level : Easy - Number of moves : " + limitOfMoves);
+        }
+    }
+
+    /**
+     * Counting the current move of the player
+     * @return false if the player has executed too many moves
+     */
+    public static boolean countMove(){
+        // Count a move
+        numberOfMoves++;
+
+        // Give some informations about the number of moves left and made
+        if (numberOfMoves < limitOfMoves) {
+            System.out.println("You've currently done " + numberOfMoves+ " moves");
+            System.out.println("Moves left : " + (limitOfMoves - numberOfMoves));
+            return false;
+            // End the game if the maximimum number of moves is reached
+        } else {
+            System.out.println("You have reached the maximum number of moves");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("███▀▀▀██┼███▀▀▀███┼███▀█▄█▀███┼██▀▀▀");
+            System.out.println("██┼┼┼┼██┼██┼┼┼┼┼██┼██┼┼┼█┼┼┼██┼██┼┼┼");
+            System.out.println("██┼┼┼▄▄▄┼██▄▄▄▄▄██┼██┼┼┼▀┼┼┼██┼██▀▀▀");
+            System.out.println("██┼┼┼┼██┼██┼┼┼┼┼██┼██┼┼┼┼┼┼┼██┼██┼┼┼");
+            System.out.println("███▄▄▄██┼██┼┼┼┼┼██┼██┼┼┼┼┼┼┼██┼██▄▄▄");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("███▀▀▀███┼▀███┼┼██▀┼██▀▀▀┼██▀▀▀▀██▄┼");
+            System.out.println("██┼┼┼┼┼██┼┼┼██┼┼██┼┼██┼┼┼┼██┼┼┼┼┼██┼");
+            System.out.println("██┼┼┼┼┼██┼┼┼██┼┼██┼┼██▀▀▀┼██▄▄▄▄▄▀▀┼");
+            System.out.println("██┼┼┼┼┼██┼┼┼██┼┼█▀┼┼██┼┼┼┼██┼┼┼┼┼██┼");
+            System.out.println("███▄▄▄███┼┼┼─▀█▀┼┼─┼██▄▄▄┼██┼┼┼┼┼██▄");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼██┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼██┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼████▄┼┼┼▄▄▄▄▄▄▄┼┼┼▄████┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼┼▀▀█▄█████████▄█▀▀┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼┼█████████████┼┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼┼██▀▀▀███▀▀▀██┼┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼┼██┼┼┼███┼┼┼██┼┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼┼█████▀▄▀█████┼┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼┼┼███████████┼┼┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼▄▄▄██┼┼█▀█▀█┼┼██▄▄▄┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼▀▀██┼┼┼┼┼┼┼┼┼┼┼██▀▀┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼▀▀┼┼┼┼┼┼┼┼┼┼┼▀▀┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println("┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼");
+            System.out.println();
+            System.out.println();
+            return true;
+        }
     }
 
     /**
