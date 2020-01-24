@@ -35,6 +35,15 @@ import java.util.Scanner;
     private static int limitOfMoves;
         
     /**
+    * Starts the game
+    * @author Daniel
+    */
+    public static void main(String[] args) {
+        Game game = new Game();
+        game.play();
+    }
+
+    /**
      * Create the game and initialise its internal map.
      */
     public Game() 
