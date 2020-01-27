@@ -33,6 +33,7 @@ import java.util.Scanner;
     private int timeLimit;
     private static int numberOfMoves;
     private static int limitOfMoves;
+    private Room endArea;
         
     /**
     * Starts the game
@@ -59,7 +60,7 @@ import java.util.Scanner;
     }
     /**
      * Defines all items with their descripton and their weight and adds them to the list.
-     * @author Didier & Daniel
+     * @author Didier 
      */    
     public String setRandItems(){
         
@@ -135,11 +136,21 @@ import java.util.Scanner;
         
         basement.setItems("key", 1);
         
+        endArea = dungeon; // end game when you reach the dungeon 26-01-2020
+        
        
         //currentRoom = outside;  // start game outside
         player.setCurrentRoom(outside);
     }
 
+    /**
+     * Getter for the exit area //26-01-2020 bijgevoegd
+     * @return the exit are Room
+     */
+       public Room getEndArea() {
+           return endArea;
+        }
+        
     /**
      *  Main play routine.  Loops until end of play.
      */
